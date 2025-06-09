@@ -1,13 +1,15 @@
 import { createApp, startServer } from '@trackplay/core/server'
 import { MiddlewareOptions } from '@trackplay/core/middlewares'
 import { createLogger } from '@trackplay/core/logger'
-import { getConf } from '@config/index'
+import { getEnvConfig } from '@config/index'
 import { routes } from '@routes/index'
 
-const { IS_DEVELOPMENT, HOST, PORT, CORS_ORIGINS } = getConf()
+const { NODE_ENV, HOST, PORT, CORS_ORIGINS } = getEnvConfig
+
+const isDevelopment = NODE_ENV === 'development'
 
 createLogger({
-  isDevelopment: IS_DEVELOPMENT,
+  isDevelopment: isDevelopment,
   label: 'TrackPlay-Auth',
   level: 'info',
 })
@@ -18,7 +20,7 @@ const middlewares: MiddlewareOptions = {
     credentials: true,
   },
   errorHandler: {
-    isDevelopment: IS_DEVELOPMENT,
+    isDevelopment: isDevelopment,
   },
 }
 
@@ -28,7 +30,7 @@ const app = createApp({
 })
 
 startServer(app, {
-  protocol: IS_DEVELOPMENT ? 'http' : 'https',
+  protocol: isDevelopment ? 'http' : 'https',
   host: HOST,
   port: PORT,
 })
