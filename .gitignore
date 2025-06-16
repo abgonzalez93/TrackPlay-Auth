@@ -37,3 +37,7 @@ Thumbs.db
 
 #npm
 .npmrc
+
+# JWT RSA Keys
+.files/jwt/private.key
+.files/jwt/public.key

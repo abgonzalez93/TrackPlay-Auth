@@ -1,6 +1,6 @@
 import { createApp, startServer } from '@trackplay/core/server'
-import { MiddlewareOptions } from '@trackplay/core/middlewares'
 import { createLogger } from '@trackplay/core/logger'
+import { startRedis } from '@infrastructure/index'
 import { getEnvConfig } from '@config/index'
 import { routes } from '@routes/index'
 
@@ -14,19 +14,19 @@ createLogger({
   level: 'info',
 })
 
-const middlewares: MiddlewareOptions = {
-  cors: {
-    origin: CORS_ORIGINS.split(','),
-    credentials: true,
-  },
-  errorHandler: {
-    isDevelopment: isDevelopment,
-  },
-}
+await startRedis()
 
 const app = createApp({
   routes,
-  middlewares,
+  middlewares: {
+    cors: {
+      origin: CORS_ORIGINS.split(','),
+      credentials: true,
+    },
+    errorHandler: {
+      isDevelopment: isDevelopment,
+    },
+  },
 })
 
 startServer(app, {
