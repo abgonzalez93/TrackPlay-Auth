@@ -1,63 +1,77 @@
+import {
+  TokenGenerationInput,
+  RefreshTokenRevokeInput,
+  RefreshTokenRevocationCheck,
+  RefreshTokenRotationInput,
+  SignedTokenPair,
+} from '@trackplay/core/schemas'
 import { blacklistService, tokenService } from '@services/index'
 import { UnauthorizedError } from '@trackplay/core/errors'
-import { TokenPair } from '@trackplay/core/schemas'
 
 /**
  * Service responsible for handling authentication operations within the Auth microservice.
- * This service is only responsible for credential verification and token signing.
- * It does not validate incoming tokens — that responsibility lies with the backend.
+ *
+ * This service is in charge of issuing and revoking JWT tokens.
+ * It does **not** validate incoming tokens — that responsibility lies with the backend.
  */
 export const authService = {
   /**
    * Issues a new pair of access and refresh tokens for a given user ID.
-   * The user ID must already have been validated externally (e.g., via a valid refresh token).
    *
-   * @param sub - The user ID to include in the token payload
-   * @returns An object containing signed access and refresh tokens
+   * The user ID must already be validated (e.g., through credentials or a valid refresh token).
+   *
+   * @param payload - Object containing the user ID (`sub`) for which to issue tokens
+   * @returns A signed access and refresh token pair
    */
-  generateTokens: async (sub: string): Promise<TokenPair> => {
-    return tokenService.generateTokens(sub)
+  generateTokens: async (payload: TokenGenerationInput): Promise<SignedTokenPair> => {
+    return tokenService.generateTokens(payload)
   },
 
   /**
-   * Revokes a refresh token by blacklisting its `jti` in Redis.
+   * Revokes a refresh token by storing its `jti` in the blacklist (e.g., Redis) until expiration.
    *
-   * @param jti - The unique identifier of the refresh token (from payload)
-   * @param exp - The expiration timestamp of the token (in seconds)
-   * @returns A Promise that resolves when the token is blacklisted
+   * This prevents further reuse of the token, enforcing single-use semantics for refresh tokens.
+   *
+   * @param payload - Object containing the token's `jti` and its `exp` (expiration timestamp in seconds)
+   * @throws {UnauthorizedError} If the token has already expired
    */
-  revokeRefreshToken: async (jti: string, exp: number): Promise<void> => {
+  revokeRefreshToken: async (payload: RefreshTokenRevokeInput): Promise<void> => {
+    const { jti, exp } = payload
     const ttl = exp - Math.floor(Date.now() / 1000)
     if (ttl <= 0) throw new UnauthorizedError('Token has already expired')
     await blacklistService.revokeToken(jti, ttl)
   },
 
   /**
-   * Checks whether a given refresh token has been revoked.
+   * Checks whether a given refresh token has been revoked (i.e., is in the blacklist).
    *
-   * @param jti - The JWT ID of the refresh token to check
-   * @returns A boolean indicating whether the token is revoked
+   * This is useful for detecting token reuse or logout events.
+   *
+   * @param payload - Object containing the `jti` of the token to check
+   * @returns `true` if the token is revoked, otherwise `false`
    */
-  isRefreshTokenRevoked: async (jti: string): Promise<boolean> => {
+  isRefreshTokenRevoked: async (payload: RefreshTokenRevocationCheck): Promise<boolean> => {
+    const { jti } = payload
     return blacklistService.isTokenRevoked(jti)
   },
 
   /**
    * Rotates a refresh token by:
-   * 1. Checking if the current refresh token has been revoked.
-   * 2. Revoking the current refresh token.
-   * 3. Issuing a new access and refresh token pair.
+   * 1. Verifying that it has not been revoked
+   * 2. Revoking it to prevent reuse
+   * 3. Issuing a new pair of tokens
    *
-   * @param sub - The user ID of refresh token
-   * @param jti - The JWT ID of the refresh token
-   * @param exp - The expiration time (in seconds since epoch)
-   * @returns An object containing a new pair of access and refresh tokens
-   * @throws If the refresh token has already been revoked
+   * This process ensures that refresh tokens are single-use and enforces session integrity.
+   *
+   * @param payload - Object containing `sub` (user ID), `jti`, and `exp` of the current token
+   * @returns A newly signed access and refresh token pair
+   * @throws {UnauthorizedError} If the token has already been revoked
    */
-  rotateTokens: async (sub: string, jti: string, exp: number): Promise<TokenPair> => {
-    const isRevoked = await authService.isRefreshTokenRevoked(jti)
+  rotateTokens: async (payload: RefreshTokenRotationInput): Promise<SignedTokenPair> => {
+    const { jti, exp, sub } = payload
+    const isRevoked = await authService.isRefreshTokenRevoked({ jti })
     if (isRevoked) throw new UnauthorizedError('Refresh token has been revoked')
-    await authService.revokeRefreshToken(jti, exp)
-    return await authService.generateTokens(sub)
+    await authService.revokeRefreshToken({ jti, exp })
+    return await authService.generateTokens({ sub })
   },
 }

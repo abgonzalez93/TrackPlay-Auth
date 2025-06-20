@@ -1,5 +1,5 @@
 import { generateAccessToken, generateRefreshToken } from '@utils/index'
-import { TokenPair } from '@trackplay/core/schemas'
+import { TokenGenerationInput, SignedTokenPair } from '@trackplay/core/schemas'
 
 /**
  * Service for handling operations related to JWT tokens.
@@ -7,14 +7,14 @@ import { TokenPair } from '@trackplay/core/schemas'
  */
 export const tokenService = {
   /**
-   * Generates both access and refresh tokens for a given user ID.
+   * Generates a pair of access and refresh tokens for a given subject.
    *
-   * @param sub - The subject (sub) used in the token payload.
-   * @returns A pair of access and refresh tokens.
+   * @param payload - Payload containing the subject (`sub`) to be used in the token payload
+   * @returns A promise resolving to an access/refresh token pair
    */
-  generateTokens: async (sub: string): Promise<TokenPair> => {
-    const accessToken = await generateAccessToken({ sub })
-    const refreshToken = await generateRefreshToken({ sub })
+  generateTokens: async (payload: TokenGenerationInput): Promise<SignedTokenPair> => {
+    const accessToken = await generateAccessToken(payload)
+    const refreshToken = await generateRefreshToken(payload)
     return { accessToken, refreshToken }
   },
 }

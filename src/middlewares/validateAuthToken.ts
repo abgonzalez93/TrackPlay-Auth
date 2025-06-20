@@ -1,5 +1,5 @@
+import { InternalAuthHeader, InternalAuthHeaderSchema } from '@trackplay/core/schemas'
 import { ForbiddenError, UnauthorizedError } from '@trackplay/core/errors'
-import { AuthTokenSchema, AuthToken } from '@trackplay/core/schemas'
 import { Request, Response, NextFunction } from 'express'
 import { parseOrThrow } from '@trackplay/core/utils'
 import { getEnvConfig } from '@config/config'
@@ -7,20 +7,26 @@ import { getEnvConfig } from '@config/config'
 const { AUTH_SECRET_KEY } = getEnvConfig
 
 /**
- * Middleware to validate internal auth token.
- * Only requests with a valid token in the `Authorization` or `x-auth-token` header are allowed.
+ * Middleware to validate internal service-to-service authentication.
+ * Only requests with a valid `x-auth-token` header are allowed.
  *
  * This protects internal services like the Auth microservice from external access.
  */
-export const validateAuthToken = (req: Request, _res: Response, next: NextFunction): void => {
-  const headers = req.headers['authorization'] || req.headers['x-auth-token']
-  const rawToken = Array.isArray(headers) ? headers[0] : headers
+export const validateInternalAuthToken = (req: Request, _res: Response, next: NextFunction): void => {
+  const rawHeader = Array.isArray(req.headers['x-auth-token'])
+    ? req.headers['x-auth-token'][0]
+    : req.headers['x-auth-token']
 
-  const token = parseOrThrow<AuthToken>(AuthTokenSchema, rawToken)
-  const authSecret = token.replace(/^Bearer\s+/i, '').trim()
+  const header = parseOrThrow<InternalAuthHeader>(
+    InternalAuthHeaderSchema,
+    rawHeader,
+    'x-auth-token header is invalid',
+    UnauthorizedError,
+  )
 
-  if (!authSecret) throw new UnauthorizedError('Authorization token missing')
-  if (!AUTH_SECRET_KEY || authSecret !== AUTH_SECRET_KEY) throw new ForbiddenError('Invalid authorization token')
+  const authSecret = header.replace(/^Bearer\s+/i, '').trim()
+  if (!authSecret) throw new UnauthorizedError('x-auth-token missing')
+  if (authSecret !== AUTH_SECRET_KEY) throw new ForbiddenError('Invalid internal auth token')
 
   next()
 }

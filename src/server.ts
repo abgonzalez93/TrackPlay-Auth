@@ -1,7 +1,7 @@
 import { createApp, startServer } from '@trackplay/core/server'
 import { createLogger } from '@trackplay/core/logger'
-import { startRedis } from '@infrastructure/index'
 import { getEnvConfig } from '@config/index'
+import { startRedis } from '@services/index'
 import { routes } from '@routes/index'
 
 const { NODE_ENV, HOST, PORT, CORS_ORIGINS } = getEnvConfig

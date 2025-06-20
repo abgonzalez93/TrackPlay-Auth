@@ -1,4 +1,4 @@
-import { redisClient } from '@infrastructure/index'
+import { redisClient } from '@services/index'
 
 const BLACKLIST_PREFIX = 'blacklist:token:'
 

@@ -1,10 +1,5 @@
 import { getLogger } from '@trackplay/core/logger'
-import { getEnvConfig } from '@config/index'
-import { createClient } from 'redis'
-
-const { REDIS_URL } = getEnvConfig
-
-export const redisClient = createClient({ url: REDIS_URL })
+import { redisClient } from './redisClient'
 
 /**
  * Starts and connects the Redis client using the configured REDIS_URL.

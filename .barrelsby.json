@@ -1,13 +1,5 @@
 {
-  "directory": [
-    "./src/config",
-    "./src/controllers",
-    "./src/infrastructure",
-    "./src/middlewares",
-    "./src/routes",
-    "./src/services",
-    "./src/utils"
-  ],
+  "directory": ["./src/config", "./src/controllers", "./src/middlewares", "./src/routes", "./src/services", "./src/utils"],
   "name": "index.ts",
   "structure": "flat",
   "location": "all",
