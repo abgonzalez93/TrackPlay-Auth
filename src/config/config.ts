@@ -16,7 +16,6 @@ export const getEnvConfig = createEnv({
     PORT: PortSchema,
     CORS_ORIGINS: NonEmptyStringSchema,
 
-    DATABASE_URL: UrlStringSchema,
     REDIS_URL: UrlStringSchema,
 
     ACCESS_TOKEN_TTL: PositiveNumberSchema.default(900),

@@ -38,7 +38,7 @@ export const authService = {
   revokeRefreshToken: async (payload: RefreshTokenRevokeInput): Promise<void> => {
     const { jti, exp } = payload
     const ttl = exp - Math.floor(Date.now() / 1000)
-    if (ttl <= 0) throw new UnauthorizedError('Token has already expired')
+    if (ttl <= 0) throw new UnauthorizedError('Refresh token is already expired')
     await blacklistService.revokeToken(jti, ttl)
   },
 
@@ -70,7 +70,7 @@ export const authService = {
   rotateTokens: async (payload: RefreshTokenRotationInput): Promise<SignedTokenPair> => {
     const { jti, exp, sub } = payload
     const isRevoked = await authService.isRefreshTokenRevoked({ jti })
-    if (isRevoked) throw new UnauthorizedError('Refresh token has been revoked')
+    if (isRevoked) throw new UnauthorizedError('Refresh token has been revoked and cannot be used')
     await authService.revokeRefreshToken({ jti, exp })
     return await authService.generateTokens({ sub })
   },

@@ -7,14 +7,14 @@
   "scripts": {
     "build": "tsc && tsc-alias",
     "dev": "tsx watch --clear-screen=false -r tsconfig-paths/register src/server.ts",
-    "start": "node dist/server.js",
+    "start": "node --enable-source-maps --no-warnings dist/server.js",
     "lint:fix": "eslint src --fix",
     "barrelsby:generate": "barrelsby --config .barrelsby.json",
     "madge": "madge --circular src/"
   },
   "dependencies": {
     "@t3-oss/env-core": "^0.13.8",
-    "@trackplay/core": "^1.0.61",
+    "@trackplay/core": "^1.0.71",
     "bcrypt": "^6.0.0",
     "compression": "^1.8.0",
     "cors": "^2.8.5",
@@ -31,18 +31,18 @@
     "@types/compression": "^1.8.1",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.3",
-    "@types/node": "^24.0.3",
+    "@types/node": "^24.0.4",
     "barrelsby": "^2.8.1",
     "eslint": "^9.29.0",
     "eslint-config-prettier": "^10.1.5",
     "eslint-plugin-prettier": "^5.5.0",
     "globals": "^16.2.0",
     "madge": "^8.0.0",
-    "prettier": "^3.6.0",
+    "prettier": "^3.6.1",
     "tsc-alias": "^1.8.16",
     "tsconfig-paths": "^4.2.0",
     "tsx": "^4.20.3",
     "typescript": "^5.8.3",
-    "typescript-eslint": "^8.34.1"
+    "typescript-eslint": "^8.35.0"
   }
 }

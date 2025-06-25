@@ -18,8 +18,6 @@ RUN apt-get update -y && \
 
 # Copia configuraciones necesarias
 COPY tsconfig.json ./
-
-# Copia sólo el código fuente y prisma
 COPY src ./src
 
 # Comando de arranque en desarrollo

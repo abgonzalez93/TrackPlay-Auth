@@ -17,6 +17,8 @@ export const validateInternalAuthToken = (req: Request, _res: Response, next: Ne
     ? req.headers['x-auth-token'][0]
     : req.headers['x-auth-token']
 
+  if (!rawHeader) throw new UnauthorizedError('x-auth-token is missing')
+
   const header = parseOrThrow<InternalAuthHeader>(
     InternalAuthHeaderSchema,
     rawHeader,
@@ -25,7 +27,6 @@ export const validateInternalAuthToken = (req: Request, _res: Response, next: Ne
   )
 
   const authSecret = header.replace(/^Bearer\s+/i, '').trim()
-  if (!authSecret) throw new UnauthorizedError('x-auth-token missing')
   if (authSecret !== AUTH_SECRET_KEY) throw new ForbiddenError('Invalid internal auth token')
 
   next()
