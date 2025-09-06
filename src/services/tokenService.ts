@@ -1,5 +1,5 @@
-import { generateAccessToken, generateRefreshToken } from '@utils/index'
 import { TokenGenerationInput, SignedTokenPair } from '@trackplay/core/schemas'
+import { generateAccessToken, generateRefreshToken } from '@utils/index'
 
 /**
  * Service for handling operations related to JWT tokens.

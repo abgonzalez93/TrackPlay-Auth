@@ -1,4 +1,4 @@
-import { redisClient } from '@services/index'
+import { redis } from '@clients/index'
 
 const BLACKLIST_PREFIX = 'blacklist:token:'
 
@@ -26,7 +26,7 @@ export const blacklistService = {
    */
   revokeToken: async (jti: string, ttlSeconds: number): Promise<void> => {
     const key = `${BLACKLIST_PREFIX}${jti}`
-    await redisClient.set(key, 'revoked', {
+    await redis.set(key, 'revoked', {
       expiration: {
         type: 'EX',
         value: ttlSeconds,
@@ -47,7 +47,7 @@ export const blacklistService = {
    */
   isTokenRevoked: async (jti: string): Promise<boolean> => {
     const key = `${BLACKLIST_PREFIX}${jti}`
-    const result = await redisClient.exists(key)
+    const result = await redis.exists(key)
     return result === 1
   },
 }

@@ -1,11 +1,7 @@
 import {
-  TokenGenerationInput,
   TokenGenerationInputSchema,
-  RefreshTokenRevokeInput,
   RefreshTokenRevokeInputSchema,
-  RefreshTokenRevocationCheck,
   RefreshTokenRevocationCheckSchema,
-  RefreshTokenRotationInput,
   RefreshTokenRotationInputSchema,
 } from '@trackplay/core/schemas'
 import { HTTP_STATUS } from '@trackplay/core/constants'
@@ -52,7 +48,7 @@ export const authController = {
    * @param res - Express response with a signed token pair
    */
   generateTokens: async (req: Request, res: Response): Promise<void> => {
-    const data = parseOrThrow<TokenGenerationInput>(TokenGenerationInputSchema, req.body)
+    const data = parseOrThrow(TokenGenerationInputSchema, req.body)
     const tokens = await authService.generateTokens(data)
     res.status(HTTP_STATUS.OK).json(tokens)
   },
@@ -68,7 +64,7 @@ export const authController = {
    * @param res - Express response with 204 status if successful
    */
   revokeRefreshToken: async (req: Request, res: Response): Promise<void> => {
-    const data = parseOrThrow<RefreshTokenRevokeInput>(RefreshTokenRevokeInputSchema, req.body)
+    const data = parseOrThrow(RefreshTokenRevokeInputSchema, req.body)
     await authService.revokeRefreshToken(data)
     res.status(HTTP_STATUS.NO_CONTENT).send()
   },
@@ -83,7 +79,7 @@ export const authController = {
    * @param res - Express response with a boolean `{ revoked: true | false }`
    */
   isRefreshTokenRevoked: async (req: Request, res: Response): Promise<void> => {
-    const data = parseOrThrow<RefreshTokenRevocationCheck>(RefreshTokenRevocationCheckSchema, req.query)
+    const data = parseOrThrow(RefreshTokenRevocationCheckSchema, req.query)
     const revoked = await authService.isRefreshTokenRevoked(data)
     res.status(HTTP_STATUS.OK).json({ revoked })
   },
@@ -101,7 +97,7 @@ export const authController = {
    * @param res - Express response with a new pair of `accessToken` and `refreshToken`
    */
   rotateTokens: async (req: Request, res: Response): Promise<void> => {
-    const data = parseOrThrow<RefreshTokenRotationInput>(RefreshTokenRotationInputSchema, req.body)
+    const data = parseOrThrow(RefreshTokenRotationInputSchema, req.body)
     const tokens = await authService.rotateTokens(data)
     res.status(HTTP_STATUS.OK).json(tokens)
   },

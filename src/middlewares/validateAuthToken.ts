@@ -1,5 +1,5 @@
-import { InternalAuthHeader, InternalAuthHeaderSchema } from '@trackplay/core/schemas'
 import { ForbiddenError, UnauthorizedError } from '@trackplay/core/errors'
+import { InternalAuthHeaderSchema } from '@trackplay/core/schemas'
 import { Request, Response, NextFunction } from 'express'
 import { parseOrThrow } from '@trackplay/core/utils'
 import { getEnvConfig } from '@config/config'
@@ -17,17 +17,20 @@ export const validateInternalAuthToken = (req: Request, _res: Response, next: Ne
     ? req.headers['x-auth-token'][0]
     : req.headers['x-auth-token']
 
-  if (!rawHeader) throw new UnauthorizedError('x-auth-token is missing')
+  if (!rawHeader) throw new UnauthorizedError('auth.middlewares.validateInternalAuthToken.auth_token_missing')
 
-  const header = parseOrThrow<InternalAuthHeader>(
+  const header = parseOrThrow(
     InternalAuthHeaderSchema,
     rawHeader,
-    'x-auth-token header is invalid',
+    'auth.middlewares.validateInternalAuthToken.auth_token_invalid',
     UnauthorizedError,
   )
 
   const authSecret = header.replace(/^Bearer\s+/i, '').trim()
-  if (authSecret !== AUTH_SECRET_KEY) throw new ForbiddenError('Invalid internal auth token')
+
+  if (authSecret !== AUTH_SECRET_KEY) {
+    throw new ForbiddenError('auth.middlewares.validateInternalAuthToken.internal_token_unauthorized')
+  }
 
   next()
 }
