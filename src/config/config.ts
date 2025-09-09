@@ -3,7 +3,7 @@ import {
   IpAddressSchema,
   PortSchema,
   NonEmptyStringSchema,
-  UrlStringSchema,
+  UrlSchema,
   PositiveNumberSchema,
 } from '@trackplay/core/schemas'
 import { createEnv } from '@t3-oss/env-core'
@@ -16,7 +16,7 @@ export const getEnvConfig = createEnv({
     PORT: PortSchema,
     CORS_ORIGINS: NonEmptyStringSchema,
 
-    REDIS_URL: UrlStringSchema,
+    REDIS_URL: UrlSchema,
 
     ACCESS_TOKEN_TTL: PositiveNumberSchema.default(900),
     REFRESH_TOKEN_TTL: PositiveNumberSchema.default(604800),

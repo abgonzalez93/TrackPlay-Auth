@@ -1,4 +1,4 @@
-import { validateInternalAuthToken } from '@middlewares/index'
+import { validateAuthToken } from '@middlewares/index'
 import { authController } from '@controllers/index'
 import { Router } from 'express'
 
@@ -8,7 +8,7 @@ import { Router } from 'express'
 export const authRoutes = Router()
 
 authRoutes.get('/', authController.index)
-authRoutes.post('/tokens', validateInternalAuthToken, authController.generateTokens)
-authRoutes.post('/revoke', validateInternalAuthToken, authController.revokeRefreshToken)
+authRoutes.post('/tokens', validateAuthToken, authController.generateTokens)
+authRoutes.post('/revoke', validateAuthToken, authController.revokeRefreshToken)
 authRoutes.get('/revoked', authController.isRefreshTokenRevoked)
-authRoutes.post('/rotate', validateInternalAuthToken, authController.rotateTokens)
+authRoutes.post('/rotate', validateAuthToken, authController.rotateTokens)

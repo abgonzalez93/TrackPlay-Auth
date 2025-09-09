@@ -8,6 +8,8 @@ import {
 import { blacklistService, tokenService } from '@services/index'
 import { UnauthorizedError } from '@trackplay/core/errors'
 
+const path = 'auth.services.authService'
+
 /**
  * Service responsible for handling authentication operations within the Auth microservice.
  *
@@ -38,7 +40,7 @@ export const authService = {
   revokeRefreshToken: async (payload: RefreshTokenRevokeInput): Promise<void> => {
     const { jti, exp } = payload
     const ttl = exp - Math.floor(Date.now() / 1000)
-    if (ttl <= 0) throw new UnauthorizedError('auth.services.authService.expired_refresh')
+    if (ttl <= 0) throw new UnauthorizedError(`${path}.expired_refresh`)
     await blacklistService.revokeToken(jti, ttl)
   },
 
@@ -70,7 +72,7 @@ export const authService = {
   rotateTokens: async (payload: RefreshTokenRotationInput): Promise<SignedTokenPair> => {
     const { jti, exp, sub } = payload
     const isRevoked = await authService.isRefreshTokenRevoked({ jti })
-    if (isRevoked) throw new UnauthorizedError('auth.services.authService.revoked_refresh')
+    if (isRevoked) throw new UnauthorizedError(`${path}.revoked_refresh`)
     await authService.revokeRefreshToken({ jti, exp })
     return await authService.generateTokens({ sub })
   },
