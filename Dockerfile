@@ -10,8 +10,8 @@ COPY package.json package-lock.json .npmrc* ./
 # Instala dependencias del sistema (incluye OpenSSL)
 RUN apt-get update -y && \
     apt-get install -y openssl && \
-    npm ci --silent && \
-    npm cache clean --force && \
+    pnpm ci --silent && \
+    pnpm cache clean --force && \
     rm -f .npmrc && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
@@ -21,4 +21,4 @@ COPY tsconfig.json ./
 COPY src ./src
 
 # Comando de arranque en desarrollo
-CMD ["npm", "run", "dev"]
+CMD ["pnpm", "run", "dev"]

@@ -5,7 +5,7 @@ import {
   RefreshTokenRotationInputSchema,
 } from '@trackplay/core/schemas'
 import { HTTP_STATUS } from '@trackplay/core/constants'
-import { parseOrThrow } from '@trackplay/core/utils'
+import { validateSchema } from '@trackplay/core/utils'
 import { authService } from '@services/index'
 import { Request, Response } from 'express'
 
@@ -48,7 +48,7 @@ export const authController = {
    * @param res - Express response with a signed token pair
    */
   generateTokens: async (req: Request, res: Response): Promise<void> => {
-    const data = parseOrThrow(TokenGenerationInputSchema, req.body)
+    const data = validateSchema(TokenGenerationInputSchema, req.body)
     const tokens = await authService.generateTokens(data)
     res.status(HTTP_STATUS.OK).json(tokens)
   },
@@ -63,8 +63,8 @@ export const authController = {
    * @param req - Express request containing `{ jti: string, exp: number }` in the body
    * @param res - Express response with 204 status if successful
    */
-  revokeRefreshToken: async (req: Request, res: Response): Promise<void> => {
-    const data = parseOrThrow(RefreshTokenRevokeInputSchema, req.body)
+  revokeToken: async (req: Request, res: Response): Promise<void> => {
+    const data = validateSchema(RefreshTokenRevokeInputSchema, req.body)
     await authService.revokeRefreshToken(data)
     res.status(HTTP_STATUS.NO_CONTENT).send()
   },
@@ -78,8 +78,8 @@ export const authController = {
    * @param req - Express request with `jti` provided in the query string
    * @param res - Express response with a boolean `{ revoked: true | false }`
    */
-  isRefreshTokenRevoked: async (req: Request, res: Response): Promise<void> => {
-    const data = parseOrThrow(RefreshTokenRevocationCheckSchema, req.query)
+  isTokenRevoked: async (req: Request, res: Response): Promise<void> => {
+    const data = validateSchema(RefreshTokenRevocationCheckSchema, req.query)
     const revoked = await authService.isRefreshTokenRevoked(data)
     res.status(HTTP_STATUS.OK).json({ revoked })
   },
@@ -97,7 +97,7 @@ export const authController = {
    * @param res - Express response with a new pair of `accessToken` and `refreshToken`
    */
   rotateTokens: async (req: Request, res: Response): Promise<void> => {
-    const data = parseOrThrow(RefreshTokenRotationInputSchema, req.body)
+    const data = validateSchema(RefreshTokenRotationInputSchema, req.body)
     const tokens = await authService.rotateTokens(data)
     res.status(HTTP_STATUS.OK).json(tokens)
   },

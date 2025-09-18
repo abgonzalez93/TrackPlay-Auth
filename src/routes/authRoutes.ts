@@ -9,6 +9,6 @@ export const authRoutes = Router()
 
 authRoutes.get('/', authController.index)
 authRoutes.post('/tokens', validateAuthToken, authController.generateTokens)
-authRoutes.post('/revoke', validateAuthToken, authController.revokeRefreshToken)
-authRoutes.get('/revoked', authController.isRefreshTokenRevoked)
+authRoutes.post('/revoke', validateAuthToken, authController.revokeToken)
+authRoutes.get('/revoked', authController.isTokenRevoked)
 authRoutes.post('/rotate', validateAuthToken, authController.rotateTokens)
