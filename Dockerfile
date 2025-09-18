@@ -5,13 +5,15 @@ FROM node:24.0-slim
 WORKDIR /app
 
 # Copia sólo lo necesario para instalar dependencias
-COPY package.json package-lock.json .npmrc* ./
+COPY package.json pnpm-lock.yaml .npmrc* ./
 
-# Instala dependencias del sistema (incluye OpenSSL)
-RUN apt-get update -y && \
-    apt-get install -y openssl && \
-    pnpm ci --silent && \
-    pnpm cache clean --force && \
+# Instala pnpm + dependencias del sistema
+RUN corepack enable && \
+    corepack prepare pnpm@latest --activate && \
+    apt-get update -y && \
+    apt-get install -y --no-install-recommends openssl && \
+    pnpm install --frozen-lockfile --silent && \
+    pnpm cache clean && \
     rm -f .npmrc && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
