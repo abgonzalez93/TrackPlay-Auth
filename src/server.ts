@@ -1,63 +1,42 @@
-import { createApp, startServer } from '@trackplay/core/server'
-import { createI18n, initI18n } from '@trackplay/core/i18n'
 import { connectRedis } from '@trackplay/core/clients'
-import { createLogger } from '@trackplay/core/logger'
+import { bootstrap } from '@trackplay/core/server'
 import { getEnvConfig } from '@config/index'
 import { routes } from '@routes/index'
 import { redis } from '@clients/index'
 
-const { NODE_ENV, HOST, PORT, CORS_ORIGINS } = getEnvConfig
-
-const isDevelopment = NODE_ENV === 'development'
-const corsOrigins = CORS_ORIGINS.split(',')
-
 /**
- * Bootstraps the TrackPlay Auth service.
+ * **TrackPlay Auth — Service Entry Point**
  *
- * This function is responsible for:
- * - Initializing internationalization (i18n).
- * - Creating and configuring the logger.
- * - Establishing a connection with Redis.
- * - Creating the Express application with routes and middlewares.
- * - Starting the HTTP/HTTPS server.
+ * Initializes and launches the **TrackPlay-Auth** microservice.
  *
- * @throws Will terminate the process if the server fails to start.
+ * This file serves as the composition root for the authentication service,
+ * delegating its initialization to the shared {@link bootstrap} utility
+ * provided by `@trackplay/core/server`. It ensures consistent startup behavior
+ * and lifecycle management across all TrackPlay microservices.
+ *
+ * ### Responsibilities
+ * - Load and validate environment configuration via {@link getEnvConfig}.
+ * - Establish a Redis connection before starting the HTTP server using {@link connectRedis}.
+ * - Register all service-specific routes defined in {@link routes}.
+ * - Initialize the shared infrastructure stack (logging, i18n, middlewares).
+ * - Start the server under the service name **"TrackPlay-Auth"** for centralized logging and observability.
+ *
+ * ### Notes
+ * - The {@link onBeforeApp} lifecycle hook ensures critical dependencies
+ *   (like Redis) are ready before Express starts listening.
+ * - Uses the shared {@link bootstrap} helper to maintain consistency
+ *   with other services such as Catalog, IGDB, and Notifications.
+ * - This file should remain minimal — all setup logic must be delegated
+ *   to the reusable core infrastructure utilities.
+ *
+ * @see {@link bootstrap}
+ * @see {@link connectRedis}
+ * @see {@link getEnvConfig}
+ * @see {@link routes}
  */
-const bootstrap = async () => {
-  const logger = createLogger({
-    isDevelopment: isDevelopment,
-    label: 'TrackPlay-Auth',
-    level: 'info',
-  })
-
-  await connectRedis(redis, logger)
-
-  const i18n = createI18n()
-  await initI18n(i18n)
-
-  const app = createApp({
-    routes,
-    middlewareOptions: {
-      cors: {
-        origin: corsOrigins,
-        credentials: true,
-      },
-      errorHandler: {
-        isDevelopment: isDevelopment,
-      },
-    },
-    i18n,
-    logger,
-  })
-
-  startServer(app, logger, {
-    protocol: isDevelopment ? 'http' : 'https',
-    host: HOST,
-    port: PORT,
-  })
-}
-
-await bootstrap().catch((error) => {
-  console.error('❌ Failed to start server', error)
-  process.exit(1)
+await bootstrap({
+  serviceName: 'TrackPlay-Auth',
+  routes,
+  env: getEnvConfig,
+  onBeforeApp: async (logger) => await connectRedis(redis, logger),
 })

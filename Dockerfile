@@ -1,5 +1,5 @@
 # Imagen base ligera
-FROM node:24.0-slim
+FROM node:current-slim
 
 # Crea carpeta de trabajo
 WORKDIR /app
