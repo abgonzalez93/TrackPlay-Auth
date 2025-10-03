@@ -15,26 +15,28 @@ const path = getTranslationPath(import.meta.url)
 /**
  * **Token Use Case**
  *
- * Application-level orchestrator responsible for managing the **JWT lifecycle** —
- * including generation, validation, rotation, and revocation of tokens.
+ * Application-level orchestrator managing the complete **JWT lifecycle** —
+ * including generation, validation, rotation, and revocation.
  *
- * This use case coordinates between the {@link TokenService} (for issuing tokens)
- * and the {@link BlacklistService} (for enforcing single-use refresh logic).
+ * This use case coordinates the {@link TokenService} (responsible for signing tokens)
+ * and the {@link BlacklistService} (responsible for enforcing single-use refresh behavior).
  *
+ * ---
  * ### Responsibilities
- * - Generate new access + refresh token pairs.
- * - Revoke tokens by blacklisting their JTI identifiers.
- * - Verify whether a refresh token has been revoked.
- * - Safely rotate tokens while preventing reuse of old ones.
+ * - Issue new **access** and **refresh** token pairs.
+ * - Revoke refresh tokens by blacklisting their JTI identifiers.
+ * - Verify whether a refresh token has already been revoked.
+ * - Rotate refresh tokens safely while preventing reuse of old ones.
  *
+ * ---
  * ### Notes
- * - Operates at the **application layer** — it coordinates domain services but contains no cryptographic logic.
- * - Enforces **one-time-use refresh tokens** to mitigate replay attacks.
- * - Uses {@link UnauthorizedError} to represent invalid or expired refresh operations.
+ * - Operates strictly at the **application layer**, orchestrating services but never performing cryptographic logic.
+ * - Enforces **one-time-use refresh tokens** to prevent replay attacks.
+ * - Throws {@link UnauthorizedError} for expired or previously revoked tokens.
  *
- * @param tokenService - The {@link TokenService} responsible for signing and issuing JWTs.
- * @param blacklistService - The {@link BlacklistService} handling token revocation state.
- * @returns A {@link TokenUseCase} exposing the JWT lifecycle operations.
+ * @param tokenService - The {@link TokenService} that handles JWT signing.
+ * @param blacklistService - The {@link BlacklistService} managing revocation state.
+ * @returns A {@link TokenUseCase} exposing JWT lifecycle operations.
  *
  * @see {@link TokenService}
  * @see {@link BlacklistService}
@@ -44,14 +46,15 @@ export const tokenUseCase = (tokenService: TokenService, blacklistService: Black
   /**
    * **Generate Tokens**
    *
-   * Issues a new signed **access + refresh token pair** using the provided payload.
+   * Issues a freshly signed **access + refresh token pair** for the provided payload.
    *
+   * ---
    * ### Flow
-   * 1. Delegates to {@link TokenService.generateTokens}.
+   * 1. Delegates issuance to {@link TokenService.generateTokens}.
    * 2. Returns the resulting {@link TokenPair}.
    *
-   * @param payload - The {@link TokenGenerateInput} data (e.g., `sub`, `roles`).
-   * @returns A {@link TokenPair} containing access and refresh tokens.
+   * @param payload - The {@link TokenGenerateInput} (e.g., `sub`, `roles`).
+   * @returns A {@link TokenPair} containing the new tokens.
    */
   const generateTokens = async (payload: TokenGenerateInput): Promise<TokenPair> => {
     return await tokenService.generateTokens(payload)
@@ -60,34 +63,34 @@ export const tokenUseCase = (tokenService: TokenService, blacklistService: Black
   /**
    * **Revoke Refresh Token**
    *
-   * Blacklists a refresh token by its unique JTI until its expiration time.
-   * Ensures that the token cannot be reused after logout or rotation.
+   * Adds a refresh token’s JTI to the blacklist until its expiration time.
+   * Ensures that once revoked, the token cannot be reused (e.g., after logout or rotation).
    *
+   * ---
    * ### Flow
-   * 1. Calculates remaining lifetime (`exp - now`).
+   * 1. Computes the remaining TTL (`exp - now`).
    * 2. Rejects expired tokens with {@link UnauthorizedError}.
-   * 3. Stores the JTI in the {@link BlacklistService}.
+   * 3. Persists the JTI in the blacklist using {@link BlacklistService}.
    *
-   * @param payload - The {@link TokenRevokeInput} containing token `exp` and `jti`.
-   * @throws {UnauthorizedError} If the token is already expired.
+   * @param payload - The {@link TokenRevokeInput} containing `exp` and `jti`.
+   * @throws {UnauthorizedError} If the refresh token is already expired.
    */
   const revokeRefreshToken = async (payload: TokenRevokeInput): Promise<void> => {
     const { exp, jti } = payload
-
     const now = Math.floor(Date.now() / 1000)
     const ttl = exp - now
-    if (ttl <= 0) throw new UnauthorizedError(`${path}.expired_refresh`)
 
+    if (ttl <= 0) throw new UnauthorizedError(`${path}.expired_refresh`)
     await blacklistService.revokeToken(jti, ttl)
   }
 
   /**
    * **Check Revocation Status**
    *
-   * Verifies if a given refresh token has already been revoked.
+   * Verifies whether a given refresh token (by JTI) is already blacklisted.
    *
-   * @param payload - The {@link TokenRevocationStatusInput} containing the JTI.
-   * @returns `true` if the token is blacklisted, otherwise `false`.
+   * @param payload - The {@link TokenRevocationStatusInput} containing the token’s JTI.
+   * @returns `true` if the token is revoked; otherwise `false`.
    */
   const isRefreshTokenRevoked = async (payload: TokenRevocationStatusInput): Promise<boolean> => {
     return await blacklistService.isTokenRevoked(payload.jti)
@@ -96,22 +99,23 @@ export const tokenUseCase = (tokenService: TokenService, blacklistService: Black
   /**
    * **Rotate Tokens**
    *
-   * Safely rotates refresh tokens while enforcing one-time usage.
+   * Performs a secure rotation of refresh tokens while enforcing single-use.
    *
+   * ---
    * ### Flow
-   * 1. Checks if the provided token JTI is blacklisted.
+   * 1. Checks if the provided JTI is already blacklisted.
    * 2. If revoked, throws {@link UnauthorizedError}.
-   * 3. Revokes the current refresh token via {@link revokeRefreshToken}.
-   * 4. Issues a new {@link TokenPair} using the token `sub`.
+   * 3. Calls {@link revokeRefreshToken} to blacklist the old token.
+   * 4. Issues a fresh {@link TokenPair} using the same subject (`sub`).
    *
+   * ---
    * ### Notes
-   * - Prevents replay attacks by ensuring refresh tokens are invalidated after use.
-   * - Automatically triggers blacklist storage on rotation.
+   * - Prevents replay attacks by ensuring refresh tokens are invalid after use.
+   * - Automatically revokes the current token before issuing new ones.
    *
-   * @param payload - The {@link TokenRotateInput} containing the `sub`, `exp`, and `jti`.
-   * @returns A new {@link TokenPair} with freshly issued tokens.
-   *
-   * @throws {UnauthorizedError} If the provided refresh token has been revoked.
+   * @param payload - The {@link TokenRotateInput} containing `sub`, `exp`, and `jti`.
+   * @returns A new {@link TokenPair} representing the rotated tokens.
+   * @throws {UnauthorizedError} If the provided refresh token was already revoked.
    */
   const rotateTokens = async (payload: TokenRotateInput): Promise<TokenPair> => {
     const { sub, exp, jti } = payload

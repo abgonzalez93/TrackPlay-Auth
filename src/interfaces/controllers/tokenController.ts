@@ -56,14 +56,9 @@ export const tokenController = (tokenUseCase: TokenUseCase) => {
    * @param res - Express response sending the signed token pair.
    * @returns `200 OK` with a JSON object containing `{ accessToken, refreshToken }`.
    *
-   * @example
-   * ```json
-   * POST /tokens
-   * { "sub": "user_123" }
-   * ```
    */
   const generateTokens = async (req: Request, res: Response): Promise<void> => {
-    const raw = validateSchema(TokenGenerateInputSchema, req.body, `${path}`)
+    const raw = validateSchema(TokenGenerateInputSchema, req.body, `${path}.invalid_generate_input`)
     const tokens = await tokenUseCase.generateTokens(raw)
     res.status(HTTP_STATUS.OK).json(tokens)
   }
@@ -86,7 +81,7 @@ export const tokenController = (tokenUseCase: TokenUseCase) => {
    * Once revoked, the refresh token can no longer be reused or rotated.
    */
   const revokeToken = async (req: Request, res: Response): Promise<void> => {
-    const raw = validateSchema(TokenRevokeInputSchema, req.body, `${path}`)
+    const raw = validateSchema(TokenRevokeInputSchema, req.body, `${path}.invalid_revoke_input`)
     await tokenUseCase.revokeRefreshToken(raw)
     res.status(HTTP_STATUS.NO_CONTENT).send()
   }
@@ -105,17 +100,11 @@ export const tokenController = (tokenUseCase: TokenUseCase) => {
    * @param res - Express response returning revocation status.
    * @returns `200 OK` with `{ revoked: boolean }`.
    *
-   * @example
-   * ```bash
-   * GET /revoked?jti=uuid-123
-   * → { "revoked": true }
-   * ```
-   *
    * @remarks
    * This endpoint is mainly for diagnostics or security audits.
    */
   const isTokenRevoked = async (req: Request, res: Response): Promise<void> => {
-    const raw = validateSchema(TokenRevocationStatusInputSchema, req.query, `${path}`)
+    const raw = validateSchema(TokenRevocationStatusInputSchema, req.query, `${path}.invalid_revocation_status_input`)
     const revoked = await tokenUseCase.isRefreshTokenRevoked(raw)
     res.status(HTTP_STATUS.OK).json({ revoked })
   }
@@ -137,17 +126,11 @@ export const tokenController = (tokenUseCase: TokenUseCase) => {
    * @param res - Express response returning new `{ accessToken, refreshToken }`.
    * @returns `200 OK` with JSON containing new tokens.
    *
-   * @example
-   * ```json
-   * POST /rotate
-   * { "sub": "user_123", "jti": "uuid-456", "exp": 1730000000 }
-   * ```
-   *
    * @remarks
    * Enforces one-time use of refresh tokens to prevent replay attacks.
    */
   const rotateTokens = async (req: Request, res: Response): Promise<void> => {
-    const raw = validateSchema(TokenRotateInputSchema, req.body, `${path}`)
+    const raw = validateSchema(TokenRotateInputSchema, req.body, `${path}.invalid_rotate_input`)
     const tokens = await tokenUseCase.rotateTokens(raw)
     res.status(HTTP_STATUS.OK).json(tokens)
   }

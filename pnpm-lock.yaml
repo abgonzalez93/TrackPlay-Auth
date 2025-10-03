@@ -12,8 +12,8 @@ importers:
         specifier: ^0.13.8
         version: 0.13.8(typescript@5.9.3)(zod@4.1.11)
       '@trackplay/core':
-        specifier: ^1.1.26
-        version: 1.1.26(typescript@5.9.3)
+        specifier: ^1.1.28
+        version: 1.1.28(typescript@5.9.3)
       bcrypt:
         specifier: ^6.0.0
         version: 6.0.0
@@ -36,8 +36,8 @@ importers:
         specifier: ^6.1.0
         version: 6.1.0
       redis:
-        specifier: ^5.8.2
-        version: 5.8.2
+        specifier: ^5.8.3
+        version: 5.8.3
       winston:
         specifier: ^3.18.3
         version: 3.18.3
@@ -360,33 +360,33 @@ packages:
     resolution: {integrity: sha512-QNqXyfVS2wm9hweSYD2O7F0G06uurj9kZ96TRQE5Y9hU7+tgdZwIkbAKc5Ocy1HxEY2kuDQa6cQ1WRs/O5LFKA==}
     engines: {node: ^12.20.0 || ^14.18.0 || >=16.0.0}
 
-  '@redis/bloom@5.8.2':
-    resolution: {integrity: sha512-855DR0ChetZLarblio5eM0yLwxA9Dqq50t8StXKp5bAtLT0G+rZ+eRzzqxl37sPqQKjUudSYypz55o6nNhbz0A==}
+  '@redis/bloom@5.8.3':
+    resolution: {integrity: sha512-1eldTzHvdW3Oi0TReb8m1yiFt8ZwyF6rv1NpZyG5R4TpCwuAdKQetBKoCw7D96tNFgsVVd6eL+NaGZZCqhRg4g==}
     engines: {node: '>= 18'}
     peerDependencies:
-      '@redis/client': ^5.8.2
+      '@redis/client': ^5.8.3
 
-  '@redis/client@5.8.2':
-    resolution: {integrity: sha512-WtMScno3+eBpTac1Uav2zugXEoXqaU23YznwvFgkPwBQVwEHTDgOG7uEAObtZ/Nyn8SmAMbqkEubJaMOvnqdsQ==}
+  '@redis/client@5.8.3':
+    resolution: {integrity: sha512-MZVUE+l7LmMIYlIjubPosruJ9ltSLGFmJqsXApTqPLyHLjsJUSAbAJb/A3N34fEqean4ddiDkdWzNu4ZKPvRUg==}
     engines: {node: '>= 18'}
 
-  '@redis/json@5.8.2':
-    resolution: {integrity: sha512-uxpVfas3I0LccBX9rIfDgJ0dBrUa3+0Gc8sEwmQQH0vHi7C1Rx1Qn8Nv1QWz5bohoeIXMICFZRcyDONvum2l/w==}
-    engines: {node: '>= 18'}
-    peerDependencies:
-      '@redis/client': ^5.8.2
-
-  '@redis/search@5.8.2':
-    resolution: {integrity: sha512-cNv7HlgayavCBXqPXgaS97DRPVWFznuzsAmmuemi2TMCx5scwLiP50TeZvUS06h/MG96YNPe6A0Zt57yayfxwA==}
+  '@redis/json@5.8.3':
+    resolution: {integrity: sha512-DRR09fy/u8gynHGJ4gzXYeM7D8nlS6EMv5o+h20ndTJiAc7RGR01fdk2FNjnn1Nz5PjgGGownF+s72bYG4nZKQ==}
     engines: {node: '>= 18'}
     peerDependencies:
-      '@redis/client': ^5.8.2
+      '@redis/client': ^5.8.3
 
-  '@redis/time-series@5.8.2':
-    resolution: {integrity: sha512-g2NlHM07fK8H4k+613NBsk3y70R2JIM2dPMSkhIjl2Z17SYvaYKdusz85d7VYOrZBWtDrHV/WD2E3vGu+zni8A==}
+  '@redis/search@5.8.3':
+    resolution: {integrity: sha512-EMIvEeGRR2I0BJEz4PV88DyCuPmMT1rDtznlsHY3cKSDcc9vj0Q411jUnX0iU2vVowUgWn/cpySKjpXdZ8m+5g==}
     engines: {node: '>= 18'}
     peerDependencies:
-      '@redis/client': ^5.8.2
+      '@redis/client': ^5.8.3
+
+  '@redis/time-series@5.8.3':
+    resolution: {integrity: sha512-5Jwy3ilsUYQjzpE7WZ1lEeG1RkqQ5kHtwV1p8yxXHSEmyUbC/T/AVgyjMcm52Olj/Ov/mhDKjx6ndYUi14bXsw==}
+    engines: {node: '>= 18'}
+    peerDependencies:
+      '@redis/client': ^5.8.3
 
   '@so-ric/colorspace@1.1.6':
     resolution: {integrity: sha512-/KiKkpHNOBgkFJwu9sh48LkHSMYGyuTcSFK/qMBdnOAlrRJzRSXAOFB5qwzaVQuDl8wAvHVMkaASQDReTahxuw==}
@@ -408,8 +408,8 @@ packages:
       zod:
         optional: true
 
-  '@trackplay/core@1.1.26':
-    resolution: {integrity: sha512-/cbznGTdAXY3Ig0ZTvwJs8WqNGkv+FdbRb/Mf2Q+J7R5I6jkRzFcJSDWkoFN8vnAt2Up/5ObxrRfQEPOwIwulA==, tarball: https://npm.pkg.github.com/download/@trackplay/core/1.1.26/3a947db4adba682a2098e6abe613afebe7d2da00}
+  '@trackplay/core@1.1.28':
+    resolution: {integrity: sha512-QC6PCeU63Ub6+yb9qEgZLjLYC4mBZ/VlEAkwudg40i0fpdLelXuvV6EI3JmljIjBb5FIQx3fa1oTW4wffs6yFw==, tarball: https://npm.pkg.github.com/download/@trackplay/core/1.1.28/780bb7f4f8c8471af6d529d9a409bf8f92566a98}
 
   '@ts-graphviz/adapter@2.0.6':
     resolution: {integrity: sha512-kJ10lIMSWMJkLkkCG5gt927SnGZcBuG0s0HHswGzcHTgvtUe7yk5/3zTEr0bafzsodsOq5Gi6FhQeV775nC35Q==}
@@ -496,12 +496,6 @@ packages:
       eslint: ^8.57.0 || ^9.0.0
       typescript: '>=4.8.4 <6.0.0'
 
-  '@typescript-eslint/project-service@8.44.1':
-    resolution: {integrity: sha512-ycSa60eGg8GWAkVsKV4E6Nz33h+HjTXbsDT4FILyL8Obk5/mx4tbvCNsLf9zret3ipSumAOG89UcCs/KRaKYrA==}
-    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
-    peerDependencies:
-      typescript: '>=4.8.4 <6.0.0'
-
   '@typescript-eslint/project-service@8.45.0':
     resolution: {integrity: sha512-3pcVHwMG/iA8afdGLMuTibGR7pDsn9RjDev6CCB+naRsSYs2pns5QbinF4Xqw6YC/Sj3lMrm/Im0eMfaa61WUg==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
@@ -511,12 +505,6 @@ packages:
   '@typescript-eslint/scope-manager@8.45.0':
     resolution: {integrity: sha512-clmm8XSNj/1dGvJeO6VGH7EUSeA0FMs+5au/u3lrA3KfG8iJ4u8ym9/j2tTEoacAffdW1TVUzXO30W1JTJS7dA==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
-
-  '@typescript-eslint/tsconfig-utils@8.44.1':
-    resolution: {integrity: sha512-B5OyACouEjuIvof3o86lRMvyDsFwZm+4fBOqFHccIctYgBjqR3qT39FBYGN87khcgf0ExpdCBeGKpKRhSFTjKQ==}
-    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
-    peerDependencies:
-      typescript: '>=4.8.4 <6.0.0'
 
   '@typescript-eslint/tsconfig-utils@8.45.0':
     resolution: {integrity: sha512-aFdr+c37sc+jqNMGhH+ajxPXwjv9UtFZk79k8pLoJ6p4y0snmYpPA52GuWHgt2ZF4gRRW6odsEj41uZLojDt5w==}
@@ -531,19 +519,9 @@ packages:
       eslint: ^8.57.0 || ^9.0.0
       typescript: '>=4.8.4 <6.0.0'
 
-  '@typescript-eslint/types@8.44.1':
-    resolution: {integrity: sha512-Lk7uj7y9uQUOEguiDIDLYLJOrYHQa7oBiURYVFqIpGxclAFQ78f6VUOM8lI2XEuNOKNB7XuvM2+2cMXAoq4ALQ==}
-    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
-
   '@typescript-eslint/types@8.45.0':
     resolution: {integrity: sha512-WugXLuOIq67BMgQInIxxnsSyRLFxdkJEJu8r4ngLR56q/4Q5LrbfkFRH27vMTjxEK8Pyz7QfzuZe/G15qQnVRA==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
-
-  '@typescript-eslint/typescript-estree@8.44.1':
-    resolution: {integrity: sha512-qnQJ+mVa7szevdEyvfItbO5Vo+GfZ4/GZWWDRRLjrxYPkhM+6zYB2vRYwCsoJLzqFCdZT4mEqyJoyzkunsZ96A==}
-    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
-    peerDependencies:
-      typescript: '>=4.8.4 <6.0.0'
 
   '@typescript-eslint/typescript-estree@8.45.0':
     resolution: {integrity: sha512-GfE1NfVbLam6XQ0LcERKwdTTPlLvHvXXhOeUGC1OXi4eQBoyy1iVsW+uzJ/J9jtCz6/7GCQ9MtrQ0fml/jWCnA==}
@@ -557,10 +535,6 @@ packages:
     peerDependencies:
       eslint: ^8.57.0 || ^9.0.0
       typescript: '>=4.8.4 <6.0.0'
-
-  '@typescript-eslint/visitor-keys@8.44.1':
-    resolution: {integrity: sha512-576+u0QD+Jp3tZzvfRfxon0EA2lzcDt3lhUbsC6Lgzy9x2VR4E+JUiNyGHi5T8vk0TV+fpJ5GLG1JsJuWCaKhw==}
-    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
   '@typescript-eslint/visitor-keys@8.45.0':
     resolution: {integrity: sha512-qsaFBA3e09MIDAGFUrTk+dzqtfv1XPVz8t8d1f0ybTzrCY7BKiMC5cjrl1O/P7UmHsNyW90EYSkU/ZWpmXelag==}
@@ -1667,8 +1641,8 @@ packages:
     resolution: {integrity: sha512-hOS089on8RduqdbhvQ5Z37A0ESjsqz6qnRcffsMU3495FuTdqSm+7bhJ29JvIOsBDEEnan5DPu9t3To9VRlMzA==}
     engines: {node: '>=8.10.0'}
 
-  redis@5.8.2:
-    resolution: {integrity: sha512-31vunZj07++Y1vcFGcnNWEf5jPoTkGARgfWI4+Tk55vdwHxhAvug8VEtW7Cx+/h47NuJTEg/JL77zAwC6E0OeA==}
+  redis@5.8.3:
+    resolution: {integrity: sha512-MfSrfV6+tEfTw8c4W0yFp6XWX8Il4laGU7Bx4kvW4uiYM1AuZ3KGqEGt1LdQHeD1nEyLpIWetZ/SpY3kkbgrYw==}
     engines: {node: '>= 18'}
 
   require-directory@2.1.1:
@@ -1851,8 +1825,8 @@ packages:
     resolution: {integrity: sha512-MeQTA1r0litLUf0Rp/iisCaL8761lKAZHaimlbGK4j0HysC4PLfqygQj9srcs0m2RdtDYnF8UuYyKpbjHYp7Jw==}
     engines: {node: ^14.18.0 || >=16.0.0}
 
-  tapable@2.2.3:
-    resolution: {integrity: sha512-ZL6DDuAlRlLGghwcfmSn9sK3Hr6ArtyudlSAiCqQ6IfE+b+HHbydbYDIG15IfS5do+7XQQBdBiubF/cV2dnDzg==}
+  tapable@2.3.0:
+    resolution: {integrity: sha512-g9ljZiwki/LfxmQADO3dEY1CbpmXT5Hm2fJ+QaGKwSXUylMybePR7/67YW7jOrrvjEgL1Fmz5kzyAjWVWLlucg==}
     engines: {node: '>=6'}
 
   text-hex@1.0.0:
@@ -2160,25 +2134,25 @@ snapshots:
 
   '@pkgr/core@0.2.9': {}
 
-  '@redis/bloom@5.8.2(@redis/client@5.8.2)':
+  '@redis/bloom@5.8.3(@redis/client@5.8.3)':
     dependencies:
-      '@redis/client': 5.8.2
+      '@redis/client': 5.8.3
 
-  '@redis/client@5.8.2':
+  '@redis/client@5.8.3':
     dependencies:
       cluster-key-slot: 1.1.2
 
-  '@redis/json@5.8.2(@redis/client@5.8.2)':
+  '@redis/json@5.8.3(@redis/client@5.8.3)':
     dependencies:
-      '@redis/client': 5.8.2
+      '@redis/client': 5.8.3
 
-  '@redis/search@5.8.2(@redis/client@5.8.2)':
+  '@redis/search@5.8.3(@redis/client@5.8.3)':
     dependencies:
-      '@redis/client': 5.8.2
+      '@redis/client': 5.8.3
 
-  '@redis/time-series@5.8.2(@redis/client@5.8.2)':
+  '@redis/time-series@5.8.3(@redis/client@5.8.3)':
     dependencies:
-      '@redis/client': 5.8.2
+      '@redis/client': 5.8.3
 
   '@so-ric/colorspace@1.1.6':
     dependencies:
@@ -2190,7 +2164,7 @@ snapshots:
       typescript: 5.9.3
       zod: 4.1.11
 
-  '@trackplay/core@1.1.26(typescript@5.9.3)':
+  '@trackplay/core@1.1.28(typescript@5.9.3)':
     dependencies:
       compression: 1.8.1
       cors: 2.8.5
@@ -2199,7 +2173,7 @@ snapshots:
       helmet: 8.1.0
       i18next: 25.5.3(typescript@5.9.3)
       jose: 6.1.0
-      redis: 5.8.2
+      redis: 5.8.3
       winston: 3.18.3
       zod: 4.1.11
     transitivePeerDependencies:
@@ -2316,15 +2290,6 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@typescript-eslint/project-service@8.44.1(typescript@5.9.3)':
-    dependencies:
-      '@typescript-eslint/tsconfig-utils': 8.44.1(typescript@5.9.3)
-      '@typescript-eslint/types': 8.44.1
-      debug: 4.4.3
-      typescript: 5.9.3
-    transitivePeerDependencies:
-      - supports-color
-
   '@typescript-eslint/project-service@8.45.0(typescript@5.9.3)':
     dependencies:
       '@typescript-eslint/tsconfig-utils': 8.45.0(typescript@5.9.3)
@@ -2338,10 +2303,6 @@ snapshots:
     dependencies:
       '@typescript-eslint/types': 8.45.0
       '@typescript-eslint/visitor-keys': 8.45.0
-
-  '@typescript-eslint/tsconfig-utils@8.44.1(typescript@5.9.3)':
-    dependencies:
-      typescript: 5.9.3
 
   '@typescript-eslint/tsconfig-utils@8.45.0(typescript@5.9.3)':
     dependencies:
@@ -2359,25 +2320,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@typescript-eslint/types@8.44.1': {}
-
   '@typescript-eslint/types@8.45.0': {}
-
-  '@typescript-eslint/typescript-estree@8.44.1(typescript@5.9.3)':
-    dependencies:
-      '@typescript-eslint/project-service': 8.44.1(typescript@5.9.3)
-      '@typescript-eslint/tsconfig-utils': 8.44.1(typescript@5.9.3)
-      '@typescript-eslint/types': 8.44.1
-      '@typescript-eslint/visitor-keys': 8.44.1
-      debug: 4.4.3
-      fast-glob: 3.3.3
-      is-glob: 4.0.3
-      minimatch: 9.0.5
-      semver: 7.7.2
-      ts-api-utils: 2.1.0(typescript@5.9.3)
-      typescript: 5.9.3
-    transitivePeerDependencies:
-      - supports-color
 
   '@typescript-eslint/typescript-estree@8.45.0(typescript@5.9.3)':
     dependencies:
@@ -2405,11 +2348,6 @@ snapshots:
       typescript: 5.9.3
     transitivePeerDependencies:
       - supports-color
-
-  '@typescript-eslint/visitor-keys@8.44.1':
-    dependencies:
-      '@typescript-eslint/types': 8.44.1
-      eslint-visitor-keys: 4.2.1
 
   '@typescript-eslint/visitor-keys@8.45.0':
     dependencies:
@@ -2738,7 +2676,7 @@ snapshots:
 
   detective-typescript@14.0.0(typescript@5.9.3):
     dependencies:
-      '@typescript-eslint/typescript-estree': 8.44.1(typescript@5.9.3)
+      '@typescript-eslint/typescript-estree': 8.45.0(typescript@5.9.3)
       ast-module-types: 6.0.1
       node-source-walk: 7.0.1
       typescript: 5.9.3
@@ -2779,7 +2717,7 @@ snapshots:
   enhanced-resolve@5.18.3:
     dependencies:
       graceful-fs: 4.2.11
-      tapable: 2.2.3
+      tapable: 2.3.0
 
   entities@4.5.0: {}
 
@@ -3562,13 +3500,13 @@ snapshots:
     dependencies:
       picomatch: 2.3.1
 
-  redis@5.8.2:
+  redis@5.8.3:
     dependencies:
-      '@redis/bloom': 5.8.2(@redis/client@5.8.2)
-      '@redis/client': 5.8.2
-      '@redis/json': 5.8.2(@redis/client@5.8.2)
-      '@redis/search': 5.8.2(@redis/client@5.8.2)
-      '@redis/time-series': 5.8.2(@redis/client@5.8.2)
+      '@redis/bloom': 5.8.3(@redis/client@5.8.3)
+      '@redis/client': 5.8.3
+      '@redis/json': 5.8.3(@redis/client@5.8.3)
+      '@redis/search': 5.8.3(@redis/client@5.8.3)
+      '@redis/time-series': 5.8.3(@redis/client@5.8.3)
 
   require-directory@2.1.1: {}
 
@@ -3755,7 +3693,7 @@ snapshots:
     dependencies:
       '@pkgr/core': 0.2.9
 
-  tapable@2.2.3: {}
+  tapable@2.3.0: {}
 
   text-hex@1.0.0: {}
 
