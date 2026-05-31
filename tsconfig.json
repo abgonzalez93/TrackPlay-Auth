@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "types": ["compression", "cors", "express", "node"],
+    "types": ["express", "node"],
     "target": "ES2024",
     "module": "ESNext",
     "moduleResolution": "bundler",
